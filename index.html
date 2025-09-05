@@ -2,92 +2,62 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Interaction AR.js - Exercice 3 (pulsation + couleurs fixes)</title>
+    <title>Interaction AR.js - Exercice 3 (sans JS)</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
 
-        <!-- Caméra avec curseur -->
-        <a-entity camera>
-            <a-cursor 
-                fuse="false" 
-                raycaster="objects: .clickable">
-            </a-cursor>
-        </a-entity>
+    <!-- Caméra avec curseur -->
+    <a-entity camera>
+        <a-cursor fuse="false" raycaster="objects: .clickable"></a-cursor>
+    </a-entity>
 
-        <!-- Marqueur Hiro -->
-        <a-marker preset="hiro">
-            <a-box id="interactive-box" 
-                   class="clickable"
-                   position="0 0.5 0" 
-                   color="blue"
-                   material="opacity: 0.8; transparent: true;">
-                   
-                <!-- Animation de rotation lente par défaut -->
-                <a-animation id="slow-rotation"
-                             attribute="rotation"
-                             from="0 0 0" to="0 360 0"
-                             dur="4000"
-                             easing="linear"
-                             repeat="indefinite">
-                </a-animation>
-            </a-box>
-        </a-marker>
-        
-    </a-scene>
+    <!-- Marqueur Hiro -->
+    <a-marker preset="hiro">
+        <a-box class="clickable"
+               position="0 0.5 0"
+               color="blue"
+               material="opacity: 0.8; transparent: true;"
+               scale="1 1 1"
+               rotation="0 0 0">
 
-    <script>
-        const box = document.querySelector("#interactive-box");
+            <!-- Rotation lente par défaut -->
+            <a-animation attribute="rotation"
+                         from="0 0 0" to="0 360 0"
+                         dur="4000"
+                         easing="linear"
+                         repeat="indefinite">
+            </a-animation>
 
-        box.addEventListener("click", () => {
-            // Passer en rouge
-            box.setAttribute("color", "red");
+            <!-- Rotation rapide déclenchée au clic (1 cycle seulement) -->
+            <a-animation attribute="rotation"
+                         from="0 0 0" to="0 720 0"
+                         dur="2000"
+                         easing="linear"
+                         begin="click">
+            </a-animation>
 
-            // Supprimer la rotation lente
-            const slowRot = document.querySelector("#slow-rotation");
-            if (slowRot) slowRot.remove();
+            <!-- Changement de couleur au clic -->
+            <a-animation attribute="color"
+                         from="blue" to="red"
+                         dur="200"
+                         begin="click"
+                         direction="alternate">
+            </a-animation>
 
-            // Appliquer la rotation rapide
-            box.setAttribute("animation__fastspin", {
-                property: "rotation",
-                to: "0 360 0",
-                dur: 1000,
-                easing: "linear",
-                loop: true
-            });
+            <!-- Pulsation (scale) au clic -->
+            <a-animation attribute="scale"
+                         from="1 1 1" to="1.5 1.5 1.5"
+                         dur="500"
+                         direction="alternate"
+                         begin="click">
+            </a-animation>
 
-            // Appliquer la pulsation (zoom puis retour)
-            box.setAttribute("animation__scale", {
-                property: "scale",
-                to: "1.5 1.5 1.5",
-                dir: "alternate",
-                dur: 500,
-                loop: 2
-            });
+        </a-box>
+    </a-marker>
 
-            // Après 2 secondes, rétablir l’état initial
-            setTimeout(() => {
-                box.removeAttribute("animation__fastspin");
-                box.removeAttribute("animation__scale");
-
-                // Réappliquer la rotation lente
-                const newAnim = document.createElement("a-animation");
-                newAnim.setAttribute("id", "slow-rotation");
-                newAnim.setAttribute("attribute", "rotation");
-                newAnim.setAttribute("from", "0 0 0");
-                newAnim.setAttribute("to", "0 360 0");
-                newAnim.setAttribute("dur", "4000");
-                newAnim.setAttribute("easing", "linear");
-                newAnim.setAttribute("repeat", "indefinite");
-                box.appendChild(newAnim);
-
-                // Réinitialiser la taille et la couleur
-                box.setAttribute("scale", "1 1 1");
-                box.setAttribute("color", "blue");
-            }, 2000);
-        });
-    </script>
+</a-scene>
 </body>
 </html>
