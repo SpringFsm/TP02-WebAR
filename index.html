@@ -21,7 +21,8 @@
                    class="clickable"
                    position="0 0.5 0" 
                    color="blue"
-                   material="opacity: 0.8; transparent: true;">
+                   material="opacity: 0.8; transparent: true;"
+                   animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
                 
                 <a-animation attribute="rotation"
                              from="0 0 0" to="0 360 0"
@@ -59,7 +60,7 @@
                 to: "1.5 1.5 1.5",
                 dir: "alternate",
                 dur: 500,
-                loop: 2
+                loop: true
             });
         });
     </script>
