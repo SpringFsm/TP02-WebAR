@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Interaction AR.js - Cube rotation continue</title>
+  <title>Cube AR.js interactif</title>
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false">
 
   <!-- Caméra avec curseur -->
   <a-entity camera>
@@ -19,44 +19,13 @@
     <a-box class="clickable"
            position="0 0.5 0"
            color="blue"
-           material="opacity: 0.6; transparent: true"
+           material="opacity:0.6; transparent:true; side:double"
            scale="1 1 1"
-           rotation="0 0 0">
-
-      <!-- Rotation lente permanente -->
-      <a-animation attribute="rotation"
-                   from="0 0 0" to="0 360 0"
-                   dur="3000"
-                   easing="linear"
-                   repeat="indefinite">
-      </a-animation>
-
-      <!-- Quand clic : cube devient rouge -->
-      <a-animation attribute="color"
-                   from="blue" to="red"
-                   begin="click"
-                   dur="200"
-                   fill="forwards">
-      </a-animation>
-
-      <!-- Quand clic : cube grossit -->
-      <a-animation attribute="scale"
-                   from="1 1 1" to="1.5 1.5 1.5"
-                   begin="click"
-                   dur="500"
-                   fill="forwards">
-      </a-animation>
-
-      <!-- Quand clic : rotation rapide (nouvelle animation) -->
-      <a-animation attribute="rotation"
-                   from="0 0 0" to="0 360 0"
-                   dur="1000"
-                   easing="linear"
-                   repeat="indefinite"
-                   begin="click"
-                   fill="forwards">
-      </a-animation>
-
+           rotation="0 0 0"
+           animation__rotate_slow="property: rotation; from: 0 0 0; to: 0 360 0; dur: 3000; loop: true; easing: linear"
+           animation__rotate_fast="property: rotation; from: 0 0 0; to: 0 360 0; dur: 1000; loop: true; startEvents: click; easing: linear"
+           animation__scale="property: scale; from:1 1 1; to:1.5 1.5 1.5; startEvents: click; dur:500; dir: alternate; loop:2"
+           animation__color="property: color; from:blue; to:red; startEvents: click; dur:200; fill:forwards">
     </a-box>
   </a-marker>
 
