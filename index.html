@@ -1,34 +1,67 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Cube AR.js interactif</title>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <meta charset="UTF-8">
+    <title>Interaction AR.js - Exercice 3</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
 
-  <!-- Caméra avec curseur -->
-  <a-entity camera>
-    <a-cursor fuse="false" raycaster="objects: .clickable"></a-cursor>
-  </a-entity>
+        <a-entity camera>
+            <a-cursor 
+                fuse="false" 
+                raycaster="objects: .clickable">
+            </a-cursor>
+        </a-entity>
 
-  <!-- Marqueur Hiro -->
-  <a-marker preset="hiro">
-    <a-box class="clickable"
-           position="0 0.5 0"
-           color="blue"
-           material="opacity:0.6; transparent:true; side:double"
-           scale="1 1 1"
-           rotation="0 0 0"
-           animation__rotate_slow="property: rotation; from: 0 0 0; to: 0 360 0; dur: 3000; loop: true; easing: linear"
-           animation__rotate_fast="property: rotation; from: 0 0 0; to: 0 360 0; dur: 1000; loop: true; startEvents: click; easing: linear"
-           animation__scale="property: scale; from:1 1 1; to:1.5 1.5 1.5; startEvents: click; dur:500; dir: alternate; loop:2"
-           animation__color="property: color; from:blue; to:red; startEvents: click; dur:200; fill:forwards">
-    </a-box>
-  </a-marker>
+        <a-marker preset="hiro">
+            <a-box id="interactive-box" 
+                   class="clickable"
+                   position="0 0.5 0" 
+                   color="blue"
+                   material="opacity: 0.8; transparent: true;">
+                
+                <a-animation attribute="rotation"
+                             from="0 0 0" to="0 360 0"
+                             dur="4000"
+                             easing="linear"
+                             repeat="indefinite">
+                </a-animation>
+            </a-box>
+        </a-marker>
+        
+    </a-scene>
 
-</a-scene>
+    <script>
+        const box = document.querySelector("#interactive-box");
+        const colors = ["blue", "red", "green", "yellow", "purple", "orange"];
+        let colorIndex = 0;
+
+        box.addEventListener("click", () => {
+            // Change the color
+            colorIndex = (colorIndex + 1) % colors.length;
+            box.setAttribute("color", colors[colorIndex]);
+
+            // Add a fast rotation animation, which will override the slow default one
+            box.setAttribute("animation__fastspin", {
+                property: "rotation",
+                to: "0 360 0",
+                dur: 1000,
+                easing: "linear",
+                loop: true
+            });
+
+            // Add a scale animation (pulsing effect)
+            box.setAttribute("animation__scale", {
+                property: "scale",
+                to: "1.5 1.5 1.5",
+                dir: "alternate",
+                dur: 500,
+                loop: 2
+            });
+        });
+    </script>
 </body>
 </html>
