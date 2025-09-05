@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Interaction AR.js - Cube toujours en rotation</title>
+  <title>Interaction AR.js - Cube rotation continue</title>
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
@@ -19,26 +19,27 @@
     <a-box class="clickable"
            position="0 0.5 0"
            color="blue"
+           material="opacity: 0.6; transparent: true"
            scale="1 1 1"
            rotation="0 0 0">
 
       <!-- Rotation lente permanente -->
       <a-animation attribute="rotation"
-                   to="0 360 0"
+                   from="0 0 0" to="0 360 0"
                    dur="3000"
                    easing="linear"
                    repeat="indefinite">
       </a-animation>
 
-      <!-- Changement de couleur au clic -->
+      <!-- Quand clic : cube devient rouge -->
       <a-animation attribute="color"
-                   to="red"
+                   from="blue" to="red"
                    begin="click"
                    dur="200"
                    fill="forwards">
       </a-animation>
 
-      <!-- Scale au clic -->
+      <!-- Quand clic : cube grossit -->
       <a-animation attribute="scale"
                    from="1 1 1" to="1.5 1.5 1.5"
                    begin="click"
@@ -46,9 +47,9 @@
                    fill="forwards">
       </a-animation>
 
-      <!-- Rotation rapide déclenchée au clic -->
+      <!-- Quand clic : rotation rapide (nouvelle animation) -->
       <a-animation attribute="rotation"
-                   to="0 360 0"
+                   from="0 0 0" to="0 360 0"
                    dur="1000"
                    easing="linear"
                    repeat="indefinite"
