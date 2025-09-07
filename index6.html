@@ -20,6 +20,7 @@
         border-radius: 8px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         display: none;
+        z-index: 9999; /* ✅ UI toujours au-dessus de la scène */
       }
       #ui h3 {
         margin: 5px 0;
@@ -35,6 +36,7 @@
         border-radius: 50%;
         border: none;
         cursor: pointer;
+        touch-action: manipulation; /* ✅ évite les gestuelles parasites */
       }
       .red { background: red; }
       .green { background: green; }
@@ -78,7 +80,7 @@
         ui.style.display = 'none';
       });
     
-      // Slider : taille de la boîte (fonctionne souris + tactile)
+      // Slider : taille de la boîte
       sizeSlider.addEventListener('input', (e) => {
         const scale = e.target.value;
         box.setAttribute('scale', `${scale} ${scale} ${scale}`);
@@ -89,11 +91,12 @@
         box.setAttribute('material', 'color', color);
       }
     
-      // Boutons couleur : click + touch
+      // Boutons couleur : seulement click (OK desktop + mobile)
       colorButtons.forEach(btn => {
-        const color = btn.getAttribute('data-color');
-        btn.addEventListener('click', () => changeColor(color));
-        btn.addEventListener('touchstart', () => changeColor(color));
+        btn.addEventListener('click', (e) => {
+          e.preventDefault(); // évite un scroll accidentel sur mobile
+          changeColor(btn.getAttribute('data-color'));
+        });
       });
     </script>
 
